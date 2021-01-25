@@ -1,8 +1,8 @@
 import './App.css';
-import EventPractice from './EventPractice';
+import EventPractice_Function from './EventPractice_Function';
 
 function App() {
-  return <EventPractice></EventPractice>;
+  return <EventPractice_Function></EventPractice_Function>;
 }
 
 export default App;
