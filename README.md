@@ -274,3 +274,190 @@ export default Say;
 3. DOM 요소에만 이벤트 설정 가능
    우리가 만든 돔이 아닌
    div, button, input, form, span 등의 돔 요소에만 전달 가능
+
+- onChange 이벤트 설정
+
+```jsx
+<div>
+  <h1>이벤트 연습</h1>
+  <input
+    type="text"
+    name="message"
+    placeholder="아무거나 입력"
+    onChange={(e) => {
+      console.log(e);
+    }}
+  />
+</div>
+```
+
+콘솔에 입력되는 e 객체는 SyntheticEvent로 웹부라우저의 네이티브 이벤트를 감싸는 객체
+네이티브 이벤트와 인터페이스가 같으므로 순수 자바스크립트에서 HTML 다룰 때와 똑같이 사용 가능하다.
+
+- SyntheticEvent는 네이티브와 달리 이벤트가 끝나면 이벤트가 초기화 되므로 정보를 참조할 수 없다.
+- 비동기적으로 이벤트 객체를 참조할 일이 있다면 e.persist()함수를 호출해줘야 한다.
+  ```jsx
+    onChange={(e) => {
+          console.log(e.target.value);
+        }}
+  ```
+
+* setState를 통한 state 확인
+  onClick에 대한 event를 생성하여서 alert을 통한 state 출력
+
+```jsx
+import React, { Component } from 'react';
+
+class EventPractice extends Component {
+  state = {
+    message: '',
+  };
+  render() {
+    return (
+      <div>
+        <h1>이벤트 연습</h1>
+        <input
+          type="text"
+          name="message"
+          placeholder="아무거나 입력"
+          value={this.state.message}
+          onChange={(e) => {
+            this.setState({ message: e.target.value });
+          }}
+        />
+        <button
+          onClick={() => {
+            alert(this.state.message);
+            this.setState({
+              message: '',
+            });
+          }}
+        >
+          확인
+        </button>
+      </div>
+    );
+  }
+}
+
+export default EventPractice;
+```
+
+### 임의 메서드 만들기
+
+이벤트를 처리할 때 렌더링을 하는 동시에 함수를 만들어서 전달
+-> 미리 만들어서 전달하는 방법
+가독성이 올라간다. 상황에 따라 다름(렌더링 메서드에서 함수 정의 하는게 나을 수 도 잇음)
+
+- 함수를 호출 할 때 this는 호출부에 따라서 결정 되므로 클래스의 임의 메서드가 특정 HTML 요소의 이벤트로 등록되는 과정에서 this가 바뀔 수 있다. 그러므로 this.bind를 사용하여서 묶어주는것이 필요
+  ```jsx
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+  ```
+
+* property Initializer Syntax 통한 메서드 작성
+
+새 메서드를 만들 때 마다 construntor를 수정해야하는 불편함이 존재한다. 이를 해결하기 위해서 바벨의 transform-class-properties 문법을 사용하여 화살표 함수 형태로 메서드를 정의 가능하다.
+
+### input 여러개 다루기
+
+input 값이 여러개일 경우는 메서드를 여러개 만들 수도 있지만 event 객체를 활용하면 된다.
+e.target.name을 사용하면 됨
+
+객체 안에서 [ ] 로 감싸면 그 안에 넣은 레퍼런스가 가리키는 실제 값이 key로 사용된다.
+
+input이 여러개인데 handleChange의 부분은 지금 두개를 담당 할 수 없다.
+그러기에 input에 대한 name tag로 설정된 부분을 확인 할 수 있다.
+
+placeholder는 이를 대체 불가능 하다.
+
+```jsx
+handleChange = (e) => {
+  this.setState({
+    [e.target.name]: e.target.value,
+  });
+};
+```
+
+### onKeyPress 이벤트 설정하기
+
+기존에 설정된 handleClick 이벤트를 엔터 키를 눌렀을 경우 실행하도록 하는게 목적이다.
+
+```jsx
+handleKeyPress = (e) => {
+  if (e.key === 'Enter') {
+    this.handleClick();
+  }
+};
+```
+
+위와 같이 엔터키가 입력 되었을 경우 handleClick 함수가 호출되어 alert 이된다.
+
+### function형으로 구현하기
+
+기본적인 형은 class 형과 동일하게 간다.
+차이점이라고 하면 useState를 사용하여 비구조화 할당을 통해 사용하려는 useState의 이름을 설정하고 또한 const로 함수를 생성하여서 사용한다는 점이다.
+아래의 코드에서는 useState를 통해 **객체**로 초기값을 설정하고
+form으로 또 비구조화 할당으로 꺼내왔다.
+
+- 가장 큰 차이점은 onChange 부분에 불변성 유지 이다.
+  변화하는 객체에 대해서 ... spread 연산자를 통해서 복사를 한 뒤
+  [ ] 안에 넣은 레페런스로 실제 key로 동작하게 한 뒤
+  다음 상태에 넣어준다는 것 이다.
+
+```jsx
+import React, { useState } from 'react';
+
+const EventPractice_Function = () => {
+  const [form, setState] = useState({
+    username: '',
+    message: '',
+  });
+  const { username, message } = form;
+  const onChange = (e) => {
+    const nextChange = {
+      ...form,
+      [e.target.name]: e.target.value,
+    };
+    setState(nextChange);
+  };
+  const onClick = () => {
+    alert(username + ' : ' + message);
+    setState({
+      username: '',
+      message: '',
+    });
+  };
+  const onKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      onClick();
+    }
+  };
+  return (
+    <div>
+      <h1>이벤트 연습</h1>
+      <input
+        type="text"
+        name="username"
+        placeholder="아이디 입력"
+        value={username}
+        onChange={onChange}
+      />
+      <input
+        type="text"
+        name="message"
+        placeholder="아이디 입력"
+        value={message}
+        onChange={onChange}
+        onKeyPress={onKeyPress}
+      />
+      <button onClick={onClick}>입력</button>
+    </div>
+  );
+};
+
+export default EventPractice_Function;
+```
