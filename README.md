@@ -214,3 +214,63 @@ porps는 컴포넌트가 사용되는 과정에서 부모 컴포넌트가 설정
   ```
 
 - 함수형 컴포넌트에서 useState 사용하기
+  useState의 함수의 인자에는 상태의 **초기값**
+  **클래스형** 에서는 **객체**를 선언해야 하지만 useState의 경우는 아무거나 가능
+  함수를 호출하면 **배열** 반환
+  첫 번째 원소 : **현재 상태**
+  두 번째 원소 : 상태를 바꿔주는 **함수**(**세터 함수**)
+  이를 배열 **비구조화 할당**으로 자유롭게 이름 선언 가능
+
+* 여러개의 useState 사용가능
+
+```jsx
+import React, { useState } from 'react';
+
+const Say = () => {
+  const [text, setText] = useState('');
+  const onClickEnter = () => setText('안녕');
+  const onClickLeave = () => setText('잘가');
+
+  const [color, setColor] = useState('black');
+
+  return (
+    <div>
+      <button onClick={onClickEnter}>입장</button>
+      <button onClick={onClickLeave}>퇴장</button>
+      <h1 style={{ color }}>{text}</h1>
+      <button style={{ color: 'red' }} onClick={() => setColor('red')}>
+        빨간색
+      </button>
+      <button style={{ color: 'blue' }} onClick={() => setColor('blue')}>
+        파란색
+      </button>
+      <button style={{ color: 'green' }} onClick={() => setColor('green')}>
+        초록색
+      </button>
+    </div>
+  );
+};
+
+export default Say;
+```
+
+- 불변성 유지
+  무조건 useState나 세터 함수로 호출해서 사용
+  불변성 유지를 위해 객체를 복사 ...spread 또는 배열 내장 concat, map, filter 사용
+
+- props 단점
+  무조건 props 값이 고정적인 것은 아님
+  부모의 state를 설정하고 이를 자식에게 props로 전달하여 props 호출시 state 변경으로 유동적으로 가능하다.
+
+### 이벤트 헨들링
+
+주의 사항
+
+1. 이벤트 이름은 카멜 표기법
+   onClick
+2. 자바스크립트 코드 전달이 아닌 함수 형태로 전달
+   화살표 함수 문법으로 만들어서 전달 하거나
+   렌더링 외부에 미리 만들어서 전달 가능
+3. DOM 요소에만 이벤트 설정 가능
+   우리가 만든 돔이 아닌
+   div, button, input, form, span 등의 돔 요소에만 전달 가능
