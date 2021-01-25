@@ -1,9 +1,8 @@
 import './App.css';
-
-import Say from './Say';
+import EventPractice from './EventPractice';
 
 function App() {
-  return <Say></Say>;
+  return <EventPractice></EventPractice>;
 }
 
 export default App;
