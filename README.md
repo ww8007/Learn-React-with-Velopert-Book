@@ -202,3 +202,15 @@ props의 부분에 import한 PropTypes 사용
 - 협업에서의 선택사항임
 
 ### state
+
+state는 컴포넌트 내부에서 바뀔 수 있는 값을 의미
+porps는 컴포넌트가 사용되는 과정에서 부모 컴포넌트가 설정하는 것이면 자식 요소는 해당 props 읽기밖에 못함
+
+- 배열 비구조화 할당
+
+  ```jsx
+  const array = [1, 2];
+  const [one, two] = array;
+  ```
+
+- 함수형 컴포넌트에서 useState 사용하기
