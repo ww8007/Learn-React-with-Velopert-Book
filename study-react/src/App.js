@@ -1,8 +1,9 @@
 import './App.css';
-import Mycomponent from './Mycomponent';
+
+import Say from './Say';
 
 function App() {
-  return <Mycomponent name={'장동현'}>리액트</Mycomponent>;
+  return <Say></Say>;
 }
 
 export default App;
