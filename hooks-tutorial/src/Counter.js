@@ -4,7 +4,11 @@ function reducer(state, action) {
   //action 타입에 따라 다른 작업 수행
   switch (action.type) {
     case 'INCREMENT':
-      return { value: state.value + 1 };
+      console.log(state);
+      console.log(state.value + 1);
+      return {
+        value: state.value + 1,
+      };
     case 'DECREMENT':
       return { value: state.value - 1 };
     default:
@@ -19,8 +23,8 @@ const Counter = () => {
       <p>
         현재 카운터 값은 <b>{state.value}</b>
       </p>
-      <button onClick={() => dispatch({ type: 'INCREMENT' })}></button>
-      <button onClick={() => dispatch({ type: 'DECREMENT' })}></button>
+      <button onClick={() => dispatch({ type: 'INCREMENT' })}>+1</button>
+      <button onClick={() => dispatch({ type: 'DECREMENT' })}>-1</button>
     </div>
   );
 };

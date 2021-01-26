@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer } from 'react';
+
+function reducer(state, action) {
+  console.log(action.name);
+  console.log(action.value);
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+}
 
 const Info = () => {
-  const [form, setForm] = useState({
-    id: '',
-    name: '',
-  });
-  const { id, name } = form;
-  useEffect(() => {
-    console.log('effect');
-    console.log(name);
-    // return () => {
-    //   console.log('cleanup');
-    //   console.log(name);
-    // };
-  });
+  const [state, dispatch] = useReducer(reducer, { name: '', nickname: '' });
+  const { name, nickname } = state;
   const onChange = (e) => {
-    const nextForm = {
-      ...form,
-      [e.target.name]: e.target.value,
-    };
-    setForm(nextForm);
+    dispatch(e.target);
+    console.log(e.target);
   };
   return (
     <>
@@ -32,14 +27,14 @@ const Info = () => {
       />
       <input
         type="text"
-        name="id"
+        name="nickname"
         placeholder="id 입력"
-        value={id}
+        value={nickname}
         onChange={onChange}
       />
       <div>이름 : {name}</div>
 
-      <div>아이디 : {id}</div>
+      <div>아이디 : {nickname}</div>
     </>
   );
 };
