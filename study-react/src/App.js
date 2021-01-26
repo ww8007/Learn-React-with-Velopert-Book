@@ -1,8 +1,8 @@
 import './App.css';
-import Mycomponent from './Mycomponent';
+import EventPractice_Function from './EventPractice_Function';
 
 function App() {
-  return <Mycomponent name={'장동현'}>리액트</Mycomponent>;
+  return <EventPractice_Function></EventPractice_Function>;
 }
 
 export default App;
