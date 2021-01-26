@@ -461,3 +461,88 @@ const EventPractice_Function = () => {
 
 export default EventPractice_Function;
 ```
+
+### 컴포넌트 반복
+
+- map 함수
+  알고 있는 reducer와 동일하게 callback, index, array 이렇게 이루어 진다.
+  배열을 앞에 선언한 뒤 그 뒤에 배열.map((num) => 하고싶은 행동))
+
+* map 함수를 이용한 li 테그 반복되게 생성
+  ```jsx
+  const names = ['눈사람', '얼음', '눈', '바람'];
+  const nameList = names.map((name) => <li>{name}</li>);
+  ```
+
+### key
+
+key가 없으면 데이터를 순차적 비교하므로 원하는 데이터를 찾는데 시간이 많이 걸릴 수 있다.
+그러므로 key 값 사용
+
+- key 설정
+  map 함수의 인자로 전달되는 함수 내부에서 map() 함수의 **인자**로 전달되는 함수 내부에서 컴포넌트 props 설정하듯이 설정
+
+- index를 사용한 key 설정을 비효율적 <- 고유한 key 값이 없을 때만 사용
+
+- 간단한 항목 추가 예제
+
+  - 중요한 사항 : key값이 무조건 존재해야 함
+  - onChange의 이벤트에 useState로 설정한 함수를 불러와서 사용하는 것
+
+  * useState의 비구조화 할당을 통해 직접 처음에 설정한 name 값에 대해 접근이 가능하지만
+    setText를 통해 아래에서 빈 값으로 돌려주는 구조이므로 text를 value 값으로 사용하도록 한다.
+
+  1. useState를 통한 현재상태와 세터 함수 설정
+     ```jsx
+     const [names, setNames] = useState([
+       { id: 1, name: '눈사람' },
+       { id: 2, name: '눈' },
+       { id: 3, name: '사' },
+       { id: 4, name: '람' },
+     ]);
+     const [text, setText] = useState('');
+     const [nextId, setNextId] = useState(5);
+     ```
+  2. onChange, onClick 이벤트 핸들러 설정
+
+  - onClick 불변성 유지 하면서 새로운 배열 생성하여 사용 spread와 비슷
+
+  ```jsx
+  const onChange = (e) => setText(e.target.value);
+
+  const onClick = () => {
+    const nextName = names.concat({
+      id: nextId,
+      name: text,
+    });
+    setNextId(nextId + 1);
+    setNames(nextName);
+    setText('');
+  };
+  ```
+
+  3. map 함수를 이용한 li 테그들 생성
+     ```jsx
+     const nameList = names.map((myname) => (
+       <li key={myname.id}>{myname.name}</li>
+     ));
+     ```
+  4. 삭제 기능 구현
+
+     - filter를 사용한 불변성을 유지하며 새로운 배열 생성
+
+     ```jsx
+     const onRemove = (id) => {
+       const nextNames = names.filter((name) => name.id !== id);
+       setNames(nextNames);
+     };
+     ```
+
+     - onDoubleClick은 이미 존재하는 함수 ( ) => { } 화살표 문법 주의
+       ```jsx
+       const nameList = names.map((myname) => (
+         <li key={myname.id} onDoubleClick={() => onRemove(myname.id)}>
+           {myname.name}
+         </li>
+       ));
+       ```

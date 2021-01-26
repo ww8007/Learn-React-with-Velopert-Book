@@ -1,8 +1,8 @@
 import './App.css';
-import EventPractice_Function from './EventPractice_Function';
+import IteralSmaple from './IteralSample';
 
 function App() {
-  return <EventPractice_Function></EventPractice_Function>;
+  return <IteralSmaple></IteralSmaple>;
 }
 
 export default App;
