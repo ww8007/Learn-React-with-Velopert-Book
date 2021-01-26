@@ -1,32 +1,47 @@
-import React, {useReducer} from 'react';
+import React, { useState } from 'react';
 
-function reducer (state, action) {
-    return {
-        ...state,
-        state.number
-    }
-}
+const getavg = (numbers) => {
+  if (numbers.length === 0) return 0;
+  const sum = numbers.reduce((acc, current) => acc + current);
+  return sum / numbers.length;
+};
 
 const GetAvg = () => {
-    const [state, dispatch] = useReducer(reducer, {ans : 0 , number : []});
-    const {ans, number} = state;
-    const onChange = (e) => {
-        dispatch(e.target);
-    }
-    const onClick = (e) => {
-        dispatch(e.target.number = 0);
-    }
-    return (
-        <div>
-            <h1>{ans}</h1>
-            <input type="text"
-            placeholder="숫자 입력"
-            value={number}
-            onChange={onChange}
-            />
-            <button onClick={onClick}>더하여 평균 구하기</button>
-        </div>
-    );
+  const [number, setNumber] = useState('');
+  const [list, setList] = useState([]);
+
+  const onChange = (e) => {
+    setNumber(e.target.value);
+  };
+
+  const onClickAdd = () => {
+    const nextList = list.concat(parseInt(number));
+    setList(nextList);
+    setNumber('');
+  };
+  let avg = 0;
+  const onClickGet = () => {
+    avg = getavg(list);
+    console.log(avg);
+  };
+  return (
+    <div>
+      <h1>평균값 : {(console.log(avg), avg)}</h1>
+      <input
+        type="number"
+        placeholder="숫자입력"
+        value={number}
+        onChange={onChange}
+      />
+      <button onClick={onClickAdd}>추가</button>
+      <button onClick={onClickGet}>평균 구하기</button>
+      <ul>
+        {list.map((value, index) => (
+          <li key={index}>{value}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default GetAvg;
