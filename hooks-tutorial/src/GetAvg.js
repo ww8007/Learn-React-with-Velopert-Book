@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState, useRef } from 'react';
 
 const getavg = (numbers) => {
   if (numbers.length === 0) return 0;
@@ -9,21 +9,19 @@ const getavg = (numbers) => {
 const GetAvg = () => {
   const [number, setNumber] = useState('');
   const [list, setList] = useState([]);
-
-  const onChange = (e) => {
+  const inputEI = useRef(null);
+  const onChange = useCallback((e) => {
     setNumber(e.target.value);
-  };
+  }, []);
 
-  const onClickAdd = () => {
+  const onClickAdd = useCallback(() => {
     const nextList = list.concat(parseInt(number));
     setList(nextList);
     setNumber('');
-  };
-  let avg = 0;
-  const onClickGet = () => {
-    avg = getavg(list);
-    console.log(avg);
-  };
+    inputEI.current.focus();
+  }, [number, list]);
+  const avg = useMemo(() => getavg(list), [list]);
+
   return (
     <div>
       <h1>평균값 : {(console.log(avg), avg)}</h1>
@@ -32,9 +30,10 @@ const GetAvg = () => {
         placeholder="숫자입력"
         value={number}
         onChange={onChange}
+        ref={inputEI}
       />
       <button onClick={onClickAdd}>추가</button>
-      <button onClick={onClickGet}>평균 구하기</button>
+
       <ul>
         {list.map((value, index) => (
           <li key={index}>{value}</li>
