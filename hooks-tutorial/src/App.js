@@ -5,7 +5,7 @@ import GetAvgReducer from './GetAvgReducer';
 import Info from './Info';
 
 const App = () => {
-  return <GetAvgReducer></GetAvgReducer>;
+  return <Info></Info>;
 };
 
 export default App;
