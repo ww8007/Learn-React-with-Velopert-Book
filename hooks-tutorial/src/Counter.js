@@ -6,11 +6,10 @@ function reducer(state, action) {
     case 'INCREMENT':
       console.log(state);
       console.log(state.value + 1);
-      return {
-        value: state.value + 1,
-      };
+
+      return { hi: state.hi + 1 };
     case 'DECREMENT':
-      return { value: state.value - 1 };
+      return { hi: state.hi - 1 };
     default:
       return state;
   }
