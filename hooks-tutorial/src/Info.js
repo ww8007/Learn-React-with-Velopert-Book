@@ -1,21 +1,12 @@
-import React, { useReducer } from 'react';
-
-function reducer(state, action) {
-  console.log(action.name);
-  console.log(action.value);
-  return {
-    ...state,
-    [action.name]: action.value,
-  };
-}
+import React from 'react';
+import UserInput from './UserInput';
 
 const Info = () => {
-  const [state, dispatch] = useReducer(reducer, { name: '', nickname: '' });
+  const [state, onChange] = UserInput({
+    name: '',
+    nickname: '',
+  });
   const { name, nickname } = state;
-  const onChange = (e) => {
-    dispatch(e.target);
-    console.log(e.target);
-  };
   return (
     <>
       <input
