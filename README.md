@@ -604,6 +604,9 @@ useState보다 더 다양한 상황에 따라 다양한 상태를 다른 값으�
    - 파라미터로 state와 action을 설정하여서 현재 상태와 action 타입 설정
    - switch (action.type) 문을 통해서 각 액션 타입에 따른 작업 설정
 
+action : 지금 하는 DOM 에서의 action
+state: 현재하는 상태
+
 ### useCallback
 
 useMemo와 상당히 비슷, 렌더링 성능을 최적화 해야 하는 사용해서 사용
@@ -616,6 +619,7 @@ useMemo와 상당히 비슷, 렌더링 성능을 최적화 해야 하는 사용�
 ### useRef
 
 함수형 컴포넌트에서 ref를 쉽게 사용가능
+랜더링과 관련이 없는 코드를 수정 할 때만 이를 사용한다?
 
 ```jsx
 const inputEI = useRef(null);
@@ -637,4 +641,32 @@ input 테그 안에 사용
         onChange={onChange}
         ref={inputEI}
       />
+```
+
+### 커스텀 Hooks 만들기
+
+여러 컴포넌트에서 비슷한 기능을 공유할 경우 Hook을 사용자 정의 하여 사용가능
+
+기존에 작성하였던 info를 가져다 사용 가능
+
+- initialForm을 props로 전달하여서 쓰면 된다.
+- onChange도 이 부분에서 사용하여서 return 값으로 state, onChange를 사용한다.
+
+```jsx
+import { useReducer } from 'react';
+
+function reducer(state, action) {
+  return {
+    ...state,
+    [action.name]: action.value,
+  };
+}
+
+export default function UserInput(initalForm) {
+  const [state, dispatch] = useReducer(reducer, initalForm);
+  const onChange = (e) => {
+    dispatch(e.target);
+  };
+  return [state, onChange];
+}
 ```
