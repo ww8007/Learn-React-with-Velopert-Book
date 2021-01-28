@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+### SPA
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+한개의 페이지로 이루어진 싱글 어플리케이션의 약어
+기존에는 사용자가 다른 페이지로 이동할 때마다 새로운 html을 받아오고 페이지를 로딩 할 때 마다 서버에서 리소스를 전달받아서 해석한 뒤 화면에 보여주었음
+사용자에게 보이는 부분은 서버쪽에서 담당 -> 문제가 생김
+서버측에서 이 동작들을 담당하면 성능상에 문제
+트래픽 과다 높은 부하
+이를 속도와 트래픽 측면에서는 캐싱과 압축을 해서 서비스 제공 시 최적화 가능하지만
+사용자와 인터렉션이 자주 발생하는 모던 웹 에플리케이션에서는 문제가 많이 생김
 
-## Available Scripts
+yarn add react-router-dom
 
-In the project directory, you can run:
+### 프로젝트에 라우터 적용
 
-### `yarn start`
+index.js 파일의 react-router-dom에 내장되어 있는 BrowserRouter라는 컴포넌트를 사용하여 감싸기
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+웹 에플리케이션의 HTML5의 History API 사용하여 페이지 새로고침하지 않고 주소 변경,
+주소에 대한 정보를 props로 쉽게 조회하거나 사용 가능
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Route 컴포넌트로 특정 주소에 컴포넌트 연결
 
-### `yarn test`
+```jsx
+<Route path="주소규칙" component={보여 줄 컴포넌트}>
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 처음에 이렇게 설정하면 두개의 페이지가 같이 나타남 home, aobut
+  -> /about 규칙이 /에도 일치하기 때문에
+  Home 라우터 exact props를 true로 변경
 
-### `yarn build`
+```jsx
+<Route path="/" component={home} exact={true}></Route>
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Link 컴포넌트를 사용하여 다른 주소로 이동하기
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+일반 웹 에플리케이션에서는 a 테그를 이용하여서 페이지를 전환
+a 태그는 페이지를 전환하는 과정에서 페이지를 새로 불러오기 때문에 애플리케이션이 들고 있는 상태를 모두 날려버리게됨
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Link 컴포넌트를 사용한 전환
+  페이지를 새로 불러오는 것이 아닌 애플리케이션은 그대로 유지하면서 HTML5 History API를 사용하여서 페이지의 주소만 변경해줌
+  Link자체는 a태그로 이루어져 있지만 페이지 전환을 방지하는 기능이 내장되어있음
 
-### `yarn eject`
+### 파라미터와 쿼리
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- props에 match 삽입
+- username 비구조화 할당
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+파라미터 : 특정 아이디 혹은 이름 사용하여 조회
+쿼리 : 키워드 검색, 페이지 필요 옵션
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 쿼리
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+loacation 객체의 search 값에서 조회 가능
+location 객체는 라우트로 사용된 컴포넌트에게 props로 전달 현재 주소의 정보 지님
 
-## Learn More
+sarch 값에서 확인
+특정 값을 읽어 오기 위해서 문자열 -> 객체 형태
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+yarn add qs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 라우터의 분리
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+경로 별로 라우터를 따로 만들어서 삽입 가능

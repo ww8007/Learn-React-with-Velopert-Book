@@ -1,23 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import { Route, Link } from 'react-router-dom';
+import home from './home';
+import About from './About';
+import Profile from './Profile';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">홈</Link>
+        </li>
+        <li>
+          <Link to="/about">소개</Link>
+        </li>
+        <li>
+          <Link to="/profile/jang">jang 프로필</Link>
+        </li>
+        <li>
+          <Link to="/profile/gildong">길동 프로필</Link>
+        </li>
+      </ul>
+      <hr></hr>
+      <Route path="/" component={home} exact={true}></Route>
+      <Route path={['/about', '/info']} component={About}></Route>
+      <Route path="/profile/:username" component={Profile}></Route>
     </div>
   );
 }
