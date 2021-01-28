@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useRef } from 'react';
+import React, { useCallback, useMemo, useState, useRef } from "react";
 
 const getavg = (numbers) => {
   if (numbers.length === 0) return 0;
@@ -7,9 +7,10 @@ const getavg = (numbers) => {
 };
 
 const GetAvg = () => {
-  const [number, setNumber] = useState('');
+  const [number, setNumber] = useState("");
   const [list, setList] = useState([]);
   const inputEI = useRef(null);
+
   const onChange = useCallback((e) => {
     setNumber(e.target.value);
   }, []);
@@ -17,7 +18,7 @@ const GetAvg = () => {
   const onClickAdd = useCallback(() => {
     const nextList = list.concat(parseInt(number));
     setList(nextList);
-    setNumber('');
+    setNumber("");
     inputEI.current.focus();
   }, [number, list]);
   const avg = useMemo(() => getavg(list), [list]);

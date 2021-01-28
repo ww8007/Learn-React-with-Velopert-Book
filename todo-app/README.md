@@ -14,3 +14,42 @@
 
 yarn add node-sass@4.14.1
 yarn add classnames react-icons
+
+### onSubmit on form 과 button onClick 차이점
+
+둘 다 같은 역할을 하지만 onSubmit을 form에서 키보드 엔터에 대한 이벤트를 처리 하지 않아도 자동으로 이역할을 해주기 때문에 걱정을 하지 않아도 된다.
+
+### 지우기 기능 구현
+
+리액트 컴포넌트에서 배열의 불변성을 지키면서 배열 원소를 제거해야 할 경우 filter 사용
+
+- filter 함수
+  filter 함수에는 조건을 확인해 주는 함수를 파라미터로 넣어줘야 함.
+  파라미터로 넣는 함수는 true 또는 false를 반환 시켜줘야 하며 true를 반환하는 경우만
+  새로운 배열에 삽입된다.
+
+App.js -> TodoList -> TodoListItem
+
+todo로 부터 id 비구조화 할당 한 뒤 아이콘으로 설정한 remove classname에 만든 onRemove 함수 호출
+
+### 토글 기능 구현
+
+jsx DOM 내부에서는 if 문 구현이 안되기때문에
+
+```jsx
+const onToggle = useCallback(
+  (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, checked: !todo.checked } : todo
+      )
+    );
+  },
+  [todos]
+);
+```
+
+이렇게 구현을 한다. 이를 insert 와 동일하게 props로 계속 전달을 하여서 전달 한뒤
+마지막에서 onClick = {()=> onTolggle(id)}로 호출한다.
+
+### 컴포넌트 성능 최적화
