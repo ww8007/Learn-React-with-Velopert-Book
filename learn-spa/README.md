@@ -61,3 +61,44 @@ yarn add qs
 ### 라우터의 분리
 
 경로 별로 라우터를 따로 만들어서 삽입 가능
+
+### 리액트 라우터 부가 기능
+
+- history
+
+사용된 컴포넌트에 match, location과 함께 전달 되는 props중 하나
+이를 통해서 컴포넌트 내에 구현하는 매서드에서 라우터 API 호출 가능
+특정 버튼 눌렀을 때 뒤로 가기
+로그인 후 화면 전환
+다른 페이지 이탈 방지
+
+- class 형으로 구현하여서
+  handleGoback
+  handleGoHome
+  componentDidMount
+  componentWillUnmount
+
+### withRouter
+
+Hoc - High order component
+
+라우트로 된 컴포넌트가 아니어도 match location history 객체 접근 가능
+
+- 사용할 컴포넌트의 export를 감싸줌
+
+```jsx
+export default withRouter(withRouterSample);
+```
+
+match 객체의 params가 비어있는데 현재 자신을 보여주고 있는 라우터 컴포넌트 기준으로 match가 전달된다. Profiles를 위한 라우트를 설정할 때 path="/profiles/로 했기 때문에 username 파라미터 읽어오지 못함
+
+이를 해결하기 위해서는 Profile부에 있는 컴포넌트에 가서 withRouter를 사용하면 된다.
+
+### Switch
+
+여러 Route를 감싸서 그 중 일치하는 단 하나의 라우트만을 랜더링 시켜줌
+Switch를 사용하면 모든 규칙과 일치하지 않을 때의 Not Found 페이지도 구현 가능
+
+### NavLink를 이용한 css 스타일링 가능
+
+Link와 동일하게 사용하지만 css 스타일을 입힐 수 있다.

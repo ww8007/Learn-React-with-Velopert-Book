@@ -1,10 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import home from './home';
 import About from './About';
-import Profile from './Profile';
-
+import Profiles from './Profiles';
+import HistorySample from './HistorySample';
 function App() {
   return (
     <div>
@@ -16,16 +16,28 @@ function App() {
           <Link to="/about">소개</Link>
         </li>
         <li>
-          <Link to="/profile/jang">jang 프로필</Link>
+          <Link to="/profiles">프로필</Link>
         </li>
         <li>
-          <Link to="/profile/gildong">길동 프로필</Link>
+          <Link to="/history">History 예제</Link>
         </li>
       </ul>
       <hr></hr>
-      <Route path="/" component={home} exact={true}></Route>
-      <Route path={['/about', '/info']} component={About}></Route>
-      <Route path="/profile/:username" component={Profile}></Route>
+      <Switch>
+        <Route path="/" component={home} exact={true}></Route>
+        <Route path={['/about', '/info']} component={About}></Route>
+        <Route path="/profiles" component={Profiles}></Route>
+        <Route path="/history" component={HistorySample}></Route>
+        <Route
+          // path 지정 안할 시 모든 상황에 랜더링
+          render={({ location }) => (
+            <div>
+              <h2>이 페이지는 존재하지 않습니다.</h2>
+              <p>{location.pathname}</p>
+            </div>
+          )}
+        ></Route>
+      </Switch>
     </div>
   );
 }
