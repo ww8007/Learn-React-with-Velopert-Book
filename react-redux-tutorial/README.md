@@ -195,3 +195,63 @@ const myAction = createAction(MY_ACION, (text) => `${text}`);
      ```jsx
      export const toggle = createAction(TOGGLE, (id) => id);
      ```
+
+* handleActions의 경우는 action.payload 값을 사용
+
+### immer
+
+간단한 리듀서에 사용하면 오히려 효율이 떨어질 수 있기 때문에 알아서 판단
+
+```jsx
+const todos = handleActions(
+  {
+    [CHANGE_INPUT]: (state, { payload: input }) =>
+      produce(state, (draft) => {
+        draft.input = input;
+      }),
+    [INSERT]: (state, { payload: todo }) =>
+      produce(state, (draft) => {
+        draft.todos.push(todo);
+      }),
+    [TOGGLE]: (state, { payload: id }) =>
+      produce(state, (draft) => {
+        const todo = draft.todos.find((todo) => todo.id === id);
+        todo.done = !todo.done;
+      }),
+    [REMOVE]: (state, { payload: id }) =>
+      produce(state, (draft) => {
+        const index = draft.todos.findINdex((todo) => todo.id === id);
+        draft.todos.splice(index, 1);
+      }),
+  },
+  initialState
+);
+```
+
+### Hooks를 사용하여 컨테이너 컴포넌트 만들기
+
+connect 함수 대신 사용이 가능하다.
+
+### useSelector를 통한 상태 조회
+
+connect 함수를 사용하지 않고도 리덕스의 상태를 조회 가능
+props로 전달받아서 상태를 조회 하는 것이 아님
+const 결과 = useSelector(상태 선택 함수);
+
+### useDispatch를 사용한 액션 디스패치
+
+useDispatch import from react-redux
+
+const dispatch = useDispatch();
+
+onIncrease = {dispatch(increase())};
+
+- dispatch를 사용하고 나서 button이나 action을 사용한 경우 함수 형태로 사용하는 것 잊지 말기
+
+### useCallback을 통한 최적화
+
+함수가 계속 생성되는 경우가 잇으니
+
+이를 해결위해서 useCallback을 액션을 디스패치하는게 좋음
+
+useDispatch를 사용할 때는 useCallback과 같이 쓰는 것을 실천하는게 좋다.

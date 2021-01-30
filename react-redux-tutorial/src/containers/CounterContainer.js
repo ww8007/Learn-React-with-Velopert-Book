@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Counter from '../components/Counter';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { increase, decrease } from '../modules/counter';
-const CounterContainer = ({ number, increase, decrease }) => {
+
+const CounterContainer = () => {
+  const number = useSelector((state) => state.counter.number);
+  const dispatch = useDispatch();
+  const onIncrease = useCallback(() => dispatch(increase()), [dispatch]);
+  const onDecrease = useCallback(() => dispatch(decrease()), [dispatch]);
+
   return (
     <Counter
       number={number}
-      onIncrease={increase}
-      onDecrease={decrease}
+      onIncrease={onIncrease}
+      onDecrease={onDecrease}
     ></Counter>
   );
 };
+
+export default CounterContainer;
 
 // const mapSateToProps = (state) => ({
 //   number: state.counter.number,
@@ -28,12 +36,12 @@ const CounterContainer = ({ number, increase, decrease }) => {
 
 // export default connect(mapSateToProps, mapDispatchToProps)(CounterContainer);
 
-export default connect(
-  (state) => ({
-    number: state.counter.number,
-  }),
-  {
-    increase,
-    decrease,
-  }
-)(CounterContainer);
+// export default connect(
+//   (state) => ({
+//     number: state.counter.number,
+//   }),
+//   {
+//     increase,
+//     decrease,
+//   }
+// )(CounterContainer);
