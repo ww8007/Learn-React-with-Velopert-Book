@@ -123,3 +123,101 @@ yarn add axios
 1. 만든 reducer 루트 리듀서에 추가
 1. 프레젠테이셔널 컨테이너 작성 - 유효성 검사 필수
 1.
+
+### 리팩토링
+
+17줄 정도 되는 thunk 함수를 작성하는 것은 귀찮음
+로직을 따로 분리
+
+```jsx
+export default function createRequestThunk(type, request) {
+  //성공 및 실패 타입
+  const SUCCESS = `${type}_SUCCESS`;
+  const FAILURE = `${type}_FAILURE`;
+  return (params) => async (dispatch) => {
+    dispatch({ type });
+    try {
+      const response = await request(params);
+      dispatch({
+        type: SUCCESS,
+        payload: response.data,
+      });
+    } catch (e) {
+      dispatch({
+        type: FAILURE,
+        payload: e,
+        error: true,
+      });
+      throw e;
+    }
+  };
+}
+```
+
+### loading 부분 만들어주기
+
+리펙토링한 createRequestThunk 부분에 만들어준다.
+
+- 요청이 시작 될 때 디스패치할 액션
+  로딩이 디스패치 되면 loading reducer가 관리하고 있느 ㄴ상태에서 sample/GET_POST 값을 true로 설정한다. 기존값이 존재하지 않으면 새로 값을 설정해줌
+
+```jsx
+import { startLoading, finishLoading } from '../moudules/loading';
+
+export default function createRequestThunk(type, request) {
+  //성공 및 실패 타입
+  const SUCCESS = `${type}_SUCCESS`;
+  const FAILURE = `${type}_FAILURE`;
+  return (params) => async (dispatch) => {
+    dispatch({ type });
+    dispatch(startLoading(type));
+    try {
+      const response = await request(params);
+      dispatch({
+        type: SUCCESS,
+        payload: response.data,
+      }); // 성공
+      dispatch(finishLoading(type));
+    } catch (e) {
+      dispatch({
+        type: FAILURE,
+        payload: e,
+        error: true,
+      }); // 에러발생
+      dispatch(startLoading(type));
+      throw e;
+    }
+  };
+}
+```
+
+로딩 실패에대한 \_FAILURE 에 대해서 액션을 리듀서에서 처리해주면 된다.
+try catch 구문 이용
+
+### redux-saga
+
+비동기 작업을 관리하는 방법
+thunk가 함수 형태의 액션을 디스패치하여 미들웨어에서 해당 함수에 스토어의 dispatch와 getSate를 파라미터로 넣어서 사용하는 원리
+
+redux-saga 기존 요청을 취소 처리해야 할 때
+특정 액션이 발생했을 때 다른 액션을 발생 API 요청 등 리덕스와 관계 없는 코드 실행
+웹소켓
+API 요청 실패 시 재요청
+
+### 제너레이터 함수
+
+### 비동기 카운터 만들기
+
+루트 사가 만들어주기
+
+yiled delay
+put
+takeEvery 들어오는 모든 액션에 대해 특정 작업을 해줌
+takeLatest 가장 마지막으로 실행된 작업만 수행
+
+```jsx
+export function* rootSaga() {
+  //all 여러 사가를 합쳐주는 역할
+  yield all([counterSaga]);
+}
+```
