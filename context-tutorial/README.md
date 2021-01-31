@@ -40,3 +40,19 @@ useState를 사용한 상태와 액션을 정의 하고 이를 value에 상태�
 - createContext를 사용할 때 기본값으로 사용할 객체도 수정
   createContext의 기본 값은 실제 Provider의 객체의 형태와 일치 시기는게 좋음
   구성 파악 쉬워지고 오류도 안생김
+
+### 마우스 오른쪽 클릭 이벤트
+
+onContextMenu
+
+e.preventDefault() 할 시 기본 설정 사라짐
+
+### useContext Hook 이용한 Context 쉽게 사용
+
+함수형 컴포넌트에서만 사용 가능
+
+consumer나
+
+### Parcel로 프로젝트 만들기
+
+mkdir vanilla-redux
