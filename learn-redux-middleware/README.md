@@ -99,3 +99,27 @@ setTimeout(() => {
   console.log(value);
 });
 ```
+
+- 사용하기
+
+index.js에 추가해서 사용
+
+store에 추가 ReduxThunk
+
+### Thunk 생성 함수 만들기
+
+액션 생성 함수에서 일반 액션 객체를 반환하는 대신에 함수를 반환한다.
+
+logger, ReduxThunk 같이 사용하면 처음 디스패치 되는 액션은 함수, 두번째는 객체
+
+### 웹 요청 비동기 작업 처리하기
+
+yarn add axios
+
+1. api 생성 with axios
+1. reducer 작성
+   액션타입
+   thunk 함수 async, try, catch
+1. 만든 reducer 루트 리듀서에 추가
+1. 프레젠테이셔널 컨테이너 작성 - 유효성 검사 필수
+1.
