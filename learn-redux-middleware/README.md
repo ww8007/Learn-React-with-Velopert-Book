@@ -221,3 +221,14 @@ export function* rootSaga() {
   yield all([counterSaga]);
 }
 ```
+
+### 리덕스 개발자 도구 설치
+
+yarn add redux-devtools-extension
+
+### saga와 thunk 차이점
+
+sampleSaga()를 만들어서 takeLatest로 가장 나중의 데이터를 받아와야한다.
+그래서 이를 루트 사가에 등록해서 사용하게 되는데 이게 export 되는 함수이다.
+
+### 리펙토링
