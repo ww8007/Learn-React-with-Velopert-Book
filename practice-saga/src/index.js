@@ -8,13 +8,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import rootReducer, { rootSaga } from './modules';
+
 const logger = createLogger();
 const sagaMiddleware = createSagaMiddleware();
-const store = composeWithDevTools(
-  createStore(applyMiddleware(logger, sagaMiddleware))
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 );
 
-sagaMiddleware.run();
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <React.StrictMode>
