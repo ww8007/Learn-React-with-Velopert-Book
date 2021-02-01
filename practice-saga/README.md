@@ -1,4 +1,4 @@
-1. yarn add redux
+1. yarn add redux react-redux redux-logger redux-actions redux-devtools-extension axios
 1. yarn add react-redux
 1. yarn add redux-logger
 1. yarn add redux-actions
