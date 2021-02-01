@@ -1,8 +1,8 @@
 import { createAction, handleActions } from 'redux-actions';
 
 // 액션 생성함수 작성
-const START_LOADING = 'loading/LOADING_SCUCCESS';
-const FINISH_LOADING = 'loading/LOADING_FAILURE';
+const START_LOADING = 'loading/START_LOADING';
+const FINISH_LOADING = 'loading/FINISH_LOADING';
 
 // 요청을 위해서 액션 타입을 payload로 설정
 

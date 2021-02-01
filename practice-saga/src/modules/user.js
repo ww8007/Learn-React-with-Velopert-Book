@@ -28,11 +28,19 @@ const user = handleActions(
   {
     [GET_POST_SUCCESS]: (state, action) => ({
       ...state,
+      loading: {
+        ...state.loading,
+        GET_POST: false,
+      },
       post: action.payload,
     }),
     [GET_USERS_SUCCESS]: (state, action) => ({
       ...state,
-      post: action.payload,
+      loading: {
+        ...state.loading,
+        GET_USERS: false,
+      },
+      users: action.payload,
     }),
   },
   initialState
